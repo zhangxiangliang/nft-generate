@@ -11,7 +11,9 @@ import AnchorButton from "components/ui/AnchorButton";
 export const Nav: FC = ({}) => {
   const router = useRouter();
   const isActive = (href: string) =>
-    router.pathname === href ? "" : "bg-opacity-20 hover:bg-opacity-100";
+    router.pathname === href
+      ? ""
+      : "!text-black hover:!text-white bg-opacity-0 hover:bg-opacity-100";
 
   return (
     <nav className="space-x-2">
