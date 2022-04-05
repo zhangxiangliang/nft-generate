@@ -1,9 +1,12 @@
 // React
 import { NextPage } from "next";
 
+// Config
+import { PAGE_GENERATE } from "config/page";
+
 // Components
-import Button from "components/ui/Button";
 import Layout from "components/layout/Layout";
+import AnchorButton from "components/ui/AnchorButton";
 
 const Home: NextPage = () => {
   return (
@@ -12,7 +15,9 @@ const Home: NextPage = () => {
         <div className="text-center space-y-5">
           <h1 className="text-4xl">NFT 生成器</h1>
           <p>一起踏上新世界</p>
-          <Button>创建</Button>
+          <AnchorButton href={PAGE_GENERATE} className="inline-block">
+            创建
+          </AnchorButton>
         </div>
       </section>
     </Layout>
