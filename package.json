@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "await-to-js": "^3.0.0",
     "classnames": "^2.3.1",
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "react-flip-move": "^3.0.4",
     "skynet-js": "^4.0.27-beta"
   },
   "devDependencies": {
