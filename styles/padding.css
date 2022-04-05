@@ -1,0 +1,29 @@
+.pt-full {
+  padding-top: 100%;
+}
+
+.pr-full {
+  padding-right: 100%;
+}
+
+.pb-full {
+  padding-bottom: 100%;
+}
+
+.pl-full {
+  padding-left: 100%;
+}
+
+.px-full {
+  padding-left: 100%;
+  padding-right: 100%;
+}
+
+.py-full {
+  padding-top: 100%;
+  padding-bottom: 100%;
+}
+
+.p-full {
+  padding: 100%;
+}
