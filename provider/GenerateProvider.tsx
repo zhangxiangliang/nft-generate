@@ -21,7 +21,7 @@ export const initialGenerateAttribute: GenerateAttribute = {
   images: [],
 };
 
-export interface GenerateAttributeState {
+export interface GenerateState {
   attributes: GenerateAttribute[];
 
   createAttribute: () => void;
@@ -32,14 +32,14 @@ export interface GenerateAttributeState {
   ) => void;
 }
 
-export const GenerateAttributeContext = createContext<GenerateAttributeState>({
+export const GenerateContext = createContext<GenerateState>({
   attributes: [],
   createAttribute: () => "",
   deleteAttribute: () => "",
   updateAttribute: () => "",
 });
 
-export const GenerateAttributeProvider: FC = ({ children }) => {
+export const GenerateProvider: FC = ({ children }) => {
   const [index, setIndex] = useState<number>(0);
   const [attributes, setAttributes] = useState<GenerateAttribute[]>([]);
 
@@ -108,10 +108,10 @@ export const GenerateAttributeProvider: FC = ({ children }) => {
   };
 
   return (
-    <GenerateAttributeContext.Provider value={value}>
+    <GenerateContext.Provider value={value}>
       {children}
-    </GenerateAttributeContext.Provider>
+    </GenerateContext.Provider>
   );
 };
 
-export default GenerateAttributeProvider;
+export default GenerateProvider;

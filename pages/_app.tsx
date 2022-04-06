@@ -1,4 +1,4 @@
-// Next
+// React
 import { AppProps } from "next/app";
 
 // Styles

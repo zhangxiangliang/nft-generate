@@ -10,14 +10,11 @@ import Panel from "components/panel/Panel";
 import GenerateAttributePanel from "components/panel/GenerateAttributePanel";
 
 // Provider
-import {
-  GenerateAttribute,
-  GenerateAttributeContext,
-} from "provider/GenerateAttributeProvider";
+import { GenerateAttribute, GenerateContext } from "provider/GenerateProvider";
 
 const GenerateAttributesPanel: NextPage = () => {
   const { attributes, createAttribute, updateAttribute, deleteAttribute } =
-    useContext(GenerateAttributeContext);
+    useContext(GenerateContext);
 
   const onCreateAttribute = () => createAttribute();
 

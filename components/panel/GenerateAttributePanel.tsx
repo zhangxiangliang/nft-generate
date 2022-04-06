@@ -15,7 +15,7 @@ import Button from "components/ui/Button";
 import {
   GenerateAttribute,
   initialGenerateAttribute,
-} from "provider/GenerateAttributeProvider";
+} from "provider/GenerateProvider";
 
 export interface GenerateAttributePanelProps {
   isLast: boolean;
@@ -74,7 +74,9 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
         </section>
       </header>
       <main className="p-5">
-        {attribute.images.length === 0 && <p>暂无任何图片</p>}
+        {attribute.images.length === 0 && (
+          <p className="select-none">暂无任何图片</p>
+        )}
       </main>
     </section>
   );

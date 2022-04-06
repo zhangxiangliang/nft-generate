@@ -1,9 +1,11 @@
 // React
 import { FC } from "react";
-import { GenerateAttributeProvider } from "./GenerateAttributeProvider";
+
+// Provider
+import { GenerateProvider } from "provider/GenerateProvider";
 
 export const Provider: FC = ({ children }) => {
-  return <GenerateAttributeProvider>{children}</GenerateAttributeProvider>;
+  return <GenerateProvider>{children}</GenerateProvider>;
 };
 
 export default Provider;
