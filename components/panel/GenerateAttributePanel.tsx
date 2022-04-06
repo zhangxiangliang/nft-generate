@@ -24,7 +24,7 @@ export interface GenerateAttributePanelProps {
   title?: string;
   className?: string;
   attribute?: GenerateAttribute;
-  onAttributeChange?: (
+  onChangeAttribute?: (
     attribute: GenerateAttribute,
     changed: Partial<GenerateAttribute>
   ) => void;
@@ -35,7 +35,7 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
   isFirst = false,
 
   attribute = { ...initialGenerateAttribute },
-  onAttributeChange = () => "",
+  onChangeAttribute = () => "",
 }) => {
   return (
     <section className="border-2 rounded-md border-black border-opacity-10">
@@ -45,7 +45,7 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
           value={attribute.name}
           className="focus:outline-none w-1/2"
           onChange={(event) =>
-            onAttributeChange(attribute, { name: event.target.value })
+            onChangeAttribute(attribute, { name: event.target.value })
           }
         />
 
@@ -53,7 +53,7 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
           {!isFirst && (
             <Button
               onClick={() =>
-                onAttributeChange(attribute, { sort: attribute.sort - 1 })
+                onChangeAttribute(attribute, { sort: attribute.sort - 1 })
               }
             >
               <ChevronUpIcon className="h-5 w-5 text-white" />
@@ -62,13 +62,13 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
           {!isLast && (
             <Button
               onClick={() =>
-                onAttributeChange(attribute, { sort: attribute.sort + 1 })
+                onChangeAttribute(attribute, { sort: attribute.sort + 1 })
               }
             >
               <ChevronDownIcon className="h-5 w-5 text-white" />
             </Button>
           )}
-          <Button onClick={() => onAttributeChange(attribute, {})}>
+          <Button onClick={() => onChangeAttribute(attribute, {})}>
             <TrashIcon className="h-5 w-5 text-white" />
           </Button>
         </section>
