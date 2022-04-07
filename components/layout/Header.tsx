@@ -10,7 +10,7 @@ import AnchorButton from "components/ui/AnchorButton";
 
 export const Header: FC = ({}) => {
   return (
-    <header className="p-5 flex items-center justify-between border-b-2 border-black border-opacity-5">
+    <header className="p-3 flex items-center justify-between border-b-2 border-black border-opacity-5">
       <AnchorButton href={PAGE_HOME}>NFT Generate</AnchorButton>
 
       <Nav />

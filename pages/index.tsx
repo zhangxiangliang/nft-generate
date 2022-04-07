@@ -12,7 +12,7 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <section className="flex flex-1 justify-center items-center">
-        <div className="text-center space-y-5">
+        <div className="text-center space-y-2">
           <h1 className="text-4xl">NFT 生成器</h1>
           <p>一起踏上新世界</p>
           <AnchorButton href={PAGE_GENERATE} className="inline-block">

@@ -13,7 +13,7 @@ export const Layout: FC = ({ children }) => {
 
       <Header />
 
-      <main className="p-5 flex flex-1">{children}</main>
+      <main className="p-3 flex flex-1">{children}</main>
 
       <Footer />
     </div>

@@ -6,7 +6,7 @@ import { PAGE_GITHUB } from "config/page";
 
 export const Footer: FC = ({}) => {
   return (
-    <footer className="text-center border-t-2 border-black border-opacity-5 p-5">
+    <footer className="text-center border-t-2 border-black border-opacity-5 p-3">
       <a
         className="text-sm text-black text-opacity-50"
         href={PAGE_GITHUB}

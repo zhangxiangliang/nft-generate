@@ -22,8 +22,8 @@ export const Panel: FC<PanelProps> = ({
   actions = [],
 }) => {
   return (
-    <section className="space-y-5">
-      <header className="flex items-center justify-between space-x-5">
+    <section className="space-y-2">
+      <header className="flex items-center justify-between space-x-2">
         <h2 className="text-xl font-bold select-none">{title}</h2>
 
         <section className="space-x-2">

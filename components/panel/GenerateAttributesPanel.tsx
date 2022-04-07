@@ -30,19 +30,19 @@ const GenerateAttributesPanel: NextPage = () => {
   return (
     <Panel
       title="属性"
-      className="space-y-5"
+      className="space-y-2"
       actions={[{ text: "创建", onClick: onCreateAttribute }]}
     >
       {attributes.length === 0 && (
         <section className="border-2 rounded-md border-black border-opacity-10">
-          <main className="p-5">
-            <p>点击创建您的第一个属性</p>
+          <main className="p-3 cursor-pointer" onClick={onCreateAttribute}>
+            <p className="text-sm select-none">点击创建您的第一个属性</p>
           </main>
         </section>
       )}
 
       <FlipMove
-        className="space-y-5"
+        className="space-y-2"
         staggerDurationBy="30"
         enterAnimation="fade"
         leaveAnimation="fade"

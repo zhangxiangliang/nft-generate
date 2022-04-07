@@ -27,11 +27,11 @@ export const Select: FC<SelectProps> = ({
   return (
     <section className={classNames("space-y-2", className)}>
       <div className="select-none">
-        <label>{title}</label>
+        <label className="text-sm">{title}</label>
       </div>
       <select
         {...props}
-        className="border-2 rounded-md border-black border-opacity-10 block p-2 w-full"
+        className="border-2 rounded-md border-black border-opacity-10 block p-2 w-full text-sm"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
