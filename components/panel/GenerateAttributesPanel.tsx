@@ -3,11 +3,15 @@ import { NextPage } from "next";
 import { useContext } from "react";
 
 // NPM
+import classNames from "classnames";
 import FlipMove from "react-flip-move";
 
 // Components
 import Panel from "components/panel/Panel";
 import GenerateAttributePanel from "components/panel/GenerateAttributePanel";
+
+// Utils
+import { borderColor } from "utils/style";
 
 // Provider
 import { GenerateAttribute, GenerateContext } from "provider/GenerateProvider";
@@ -34,7 +38,7 @@ const GenerateAttributesPanel: NextPage = () => {
       actions={[{ text: "创建", onClick: onCreateAttribute }]}
     >
       {attributes.length === 0 && (
-        <section className="border-2 rounded-md border-black border-opacity-10">
+        <section className={classNames(borderColor, "border rounded-md")}>
           <main className="p-3 cursor-pointer" onClick={onCreateAttribute}>
             <p className="text-sm select-none">点击创建您的第一个属性</p>
           </main>

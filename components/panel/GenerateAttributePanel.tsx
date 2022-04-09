@@ -1,21 +1,26 @@
 // React
-import { FC } from "react";
+import { ChangeEvent, FC, useRef } from "react";
 
 // Icon
-import {
-  TrashIcon,
-  ChevronUpIcon,
-  ChevronDownIcon,
-} from "@heroicons/react/solid";
+import { UploadIcon } from "@heroicons/react/outline";
+import { TrashIcon } from "@heroicons/react/solid";
+import { ChevronUpIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/solid";
+
+// NPM
+import classNames from "classnames";
+
+// Utils
+import { borderColor } from "utils/style";
 
 // Components
 import Button from "components/ui/Button";
 
 // Provider
-import {
-  GenerateAttribute,
-  initialGenerateAttribute,
-} from "provider/GenerateProvider";
+import { GenerateAttribute } from "provider/GenerateProvider";
+import { GenerateAttributeImage } from "provider/GenerateProvider";
+import { initialGenerateAttribute } from "provider/GenerateProvider";
+import CapsuleInput from "components/form/CapsuleInput";
 
 export interface GenerateAttributePanelProps {
   isLast: boolean;
@@ -30,6 +35,20 @@ export interface GenerateAttributePanelProps {
   ) => void;
 }
 
+const toBase64 = (file: File): Promise<GenerateAttributeImage> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onerror = (error) => reject(error);
+    reader.onload = () =>
+      resolve({
+        src: reader.result as string,
+        number: 0,
+        radio: 0,
+        name: file.name.replace(/\.[^/.]+$/, ""),
+      });
+  });
+
 export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
   isLast = false,
   isFirst = false,
@@ -37,9 +56,28 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
   attribute = { ...initialGenerateAttribute },
   onChangeAttribute = () => "",
 }) => {
+  const uploadRef = useRef<HTMLInputElement>(null);
+
+  const onClickUpload = () => uploadRef?.current?.click();
+
+  const onChangeUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+
+    const images: GenerateAttributeImage[] = await Promise.all(
+      files.map(async (file) => toBase64(file))
+    );
+
+    onChangeAttribute(attribute, { images });
+  };
+
   return (
-    <section className="border-2 rounded-md border-black border-opacity-10">
-      <header className="border-b-2 border-black border-opacity-10 p-3 flex justify-between items-center">
+    <section className={classNames(borderColor, "border rounded-md ")}>
+      <header
+        className={classNames(
+          borderColor,
+          "border-b p-3 flex justify-between items-center"
+        )}
+      >
         <input
           type="text"
           value={attribute.name}
@@ -68,15 +106,45 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
               <ChevronDownIcon className="h-3 w-4 text-white" />
             </Button>
           )}
+          <Button onClick={() => onClickUpload()}>
+            <UploadIcon className="h-3 w-4 text-white" />
+          </Button>
           <Button onClick={() => onChangeAttribute(attribute, {})}>
             <TrashIcon className="h-3 w-4 text-white" />
           </Button>
         </section>
       </header>
-      <main className="p-3">
+      <input
+        type="file"
+        multiple
+        ref={uploadRef}
+        style={{ display: "none" }}
+        onChange={(event) => onChangeUpload(event)}
+      />
+      <main className="flex p-3 space-x-3 overflow-x-auto scroll">
         {attribute.images.length === 0 && (
           <p className="select-none text-sm">暂无任何图片</p>
         )}
+
+        {attribute.images.map((image) => (
+          <div key={image.src} className="flex-none select-none w-48 space-y-2">
+            <img src={image.src} className="w-48 h-48 m-0 p-0 rounded-md" />
+            <CapsuleInput
+              title="名称"
+              type="text"
+              value={image.name}
+              placeholder="请输入图片名称"
+              onChange={(event) => ""}
+            />
+            <CapsuleInput
+              title="数量"
+              type="text"
+              value={0}
+              placeholder="请输入图片数量"
+              onChange={(event) => ""}
+            />
+          </div>
+        ))}
       </main>
     </section>
   );
