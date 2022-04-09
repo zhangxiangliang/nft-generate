@@ -4,6 +4,9 @@ import { FC } from "react";
 // NPM
 import classNames from "classnames";
 
+// Utils
+import { borderColor } from "utils/style";
+
 export interface SelectOption {
   key: string;
   value: string;
@@ -31,7 +34,10 @@ export const Select: FC<SelectProps> = ({
       </div>
       <select
         {...props}
-        className="border-2 rounded-md border-black border-opacity-10 block p-2 w-full text-sm"
+        className={classNames(
+          borderColor,
+          "border rounded-md block p-2 w-full text-sm"
+        )}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
