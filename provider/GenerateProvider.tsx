@@ -2,6 +2,7 @@
 import { createContext, FC, useState } from "react";
 
 export interface GenerateAttributeImage {
+  name: string;
   src: string;
   number: number;
   radio: number;
@@ -22,7 +23,15 @@ export const initialGenerateAttribute: GenerateAttribute = {
 };
 
 export interface GenerateState {
+  name: string;
+  rarity: "open" | "close";
+  description: string;
+
   attributes: GenerateAttribute[];
+
+  setName: (name: string) => void;
+  setRarity: (rarity: "open" | "close") => void;
+  setDescription: (description: string) => void;
 
   createAttribute: () => void;
   deleteAttribute: (attribute: GenerateAttribute) => void;
@@ -33,6 +42,14 @@ export interface GenerateState {
 }
 
 export const GenerateContext = createContext<GenerateState>({
+  name: "",
+  rarity: "close",
+  description: "",
+
+  setName: () => "",
+  setRarity: () => "",
+  setDescription: () => "",
+
   attributes: [],
   createAttribute: () => "",
   deleteAttribute: () => "",
@@ -41,6 +58,9 @@ export const GenerateContext = createContext<GenerateState>({
 
 export const GenerateProvider: FC = ({ children }) => {
   const [index, setIndex] = useState<number>(0);
+  const [name, setName] = useState<string>("");
+  const [rarity, setRarity] = useState<"close" | "open">("close");
+  const [description, setDescription] = useState<string>("");
   const [attributes, setAttributes] = useState<GenerateAttribute[]>([]);
 
   const createAttribute = () => {
@@ -71,15 +91,6 @@ export const GenerateProvider: FC = ({ children }) => {
     attribute: GenerateAttribute,
     changed: Partial<GenerateAttribute>
   ) => {
-    changed.name !== undefined &&
-      setAttributes((attributes) =>
-        attributes.map((currentAttribute) =>
-          attribute.sort !== currentAttribute.sort
-            ? currentAttribute
-            : { ...attribute, name: changed.name as string }
-        )
-      );
-
     changed.sort !== undefined &&
       setAttributes(() =>
         attributes
@@ -98,10 +109,27 @@ export const GenerateProvider: FC = ({ children }) => {
             return before.sort > after.sort ? 1 : -1;
           })
       );
+
+    setAttributes((attributes) =>
+      attributes.map((currentAttribute) =>
+        attribute.sort !== currentAttribute.sort
+          ? currentAttribute
+          : { ...attribute, ...changed }
+      )
+    );
   };
 
   const value = {
+    name,
+    rarity,
+    description,
+
+    setName,
+    setRarity,
+    setDescription,
+
     attributes,
+
     createAttribute,
     deleteAttribute,
     updateAttribute,
