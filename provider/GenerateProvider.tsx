@@ -1,7 +1,8 @@
 // React
-import { createContext, FC, useState } from "react";
+import { createContext, FC, useCallback, useEffect, useState } from "react";
 
 export interface GenerateAttributeImage {
+  id: number;
   name: string;
   src: string;
   number: number;
@@ -23,6 +24,9 @@ export const initialGenerateAttribute: GenerateAttribute = {
 };
 
 export interface GenerateState {
+  limit: number;
+  total: number;
+
   name: string;
   rarity: "open" | "close";
   description: string;
@@ -42,6 +46,9 @@ export interface GenerateState {
 }
 
 export const GenerateContext = createContext<GenerateState>({
+  limit: 0,
+  total: 0,
+
   name: "",
   rarity: "close",
   description: "",
@@ -59,6 +66,8 @@ export const GenerateContext = createContext<GenerateState>({
 export const GenerateProvider: FC = ({ children }) => {
   const [index, setIndex] = useState<number>(0);
   const [name, setName] = useState<string>("");
+  const [limit, setLimit] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
   const [rarity, setRarity] = useState<"close" | "open">("close");
   const [description, setDescription] = useState<string>("");
   const [attributes, setAttributes] = useState<GenerateAttribute[]>([]);
@@ -119,7 +128,30 @@ export const GenerateProvider: FC = ({ children }) => {
     );
   };
 
+  useEffect(() => {
+    const realAttributes = attributes.filter(
+      (attribute) => attribute.images.length !== 0
+    );
+
+    const limit = realAttributes.reduce(
+      (acc, attribute) => acc * attribute.images.length,
+      1
+    );
+
+    const total = attributes
+      .map((attribute) =>
+        attribute.images.reduce((acc, image) => acc + image.number, 0)
+      )
+      .reduce((acc, cur) => (cur > acc ? cur : acc), 0);
+
+    setTotal(total);
+    setLimit(realAttributes.length === 0 ? 0 : limit);
+  }, [attributes]);
+
   const value = {
+    total,
+    limit,
+
     name,
     rarity,
     description,
