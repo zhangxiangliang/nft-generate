@@ -10,9 +10,9 @@ import GenerateAttributesPanel from "components/panel/GenerateAttributesPanel";
 const Generate: NextPage = () => {
   return (
     <Layout>
-      <section className="flex flex-1 md:space-x-2  md:space-y-0 space-y-2 flex-wrap">
+      <section className="flex w-full md:space-x-2 md:space-y-0 space-y-2 ">
         {/* Left */}
-        <section className="md:flex-1 w-full">
+        <section className="lg:w-3/4 md:w-2/3 sm:w-1/2 w-full">
           <section className="space-y-2">
             {/* Metadata */}
             <GenerateMetadataPanel />
@@ -23,7 +23,7 @@ const Generate: NextPage = () => {
         </section>
 
         {/* Right */}
-        <section className="md:w-96 w-full space-y-2">
+        <section className="lg:w-1/4 md:w-1/3 sm:w-1/2 w-full space-y-2">
           {/* Preview */}
           <Panel
             title="预览"

@@ -1,8 +1,8 @@
 // React
 import { NextPage } from "next";
 
-// Config
-import { PAGE_GENERATE } from "config/page";
+// Utils
+import { PAGE_GENERATE } from "utils/page";
 
 // Components
 import Layout from "components/layout/Layout";
