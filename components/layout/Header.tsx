@@ -1,8 +1,12 @@
 // React
 import { FC } from "react";
 
-// Config
-import { PAGE_HOME } from "config/page";
+// NPM
+import classNames from "classnames";
+
+// Utils
+import { PAGE_HOME } from "utils/page";
+import { borderColor } from "utils/style";
 
 // Components
 import Nav from "components/layout/Nav";
@@ -10,7 +14,12 @@ import AnchorButton from "components/ui/AnchorButton";
 
 export const Header: FC = ({}) => {
   return (
-    <header className="p-3 flex items-center justify-between border-b-2 border-black border-opacity-5">
+    <header
+      className={classNames(
+        borderColor,
+        "p-3 flex items-center justify-between border-b"
+      )}
+    >
       <AnchorButton href={PAGE_HOME}>NFT Generate</AnchorButton>
 
       <Nav />

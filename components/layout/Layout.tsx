@@ -8,7 +8,7 @@ import SiteMeta from "components/layout/SiteMeta";
 
 export const Layout: FC = ({ children }) => {
   return (
-    <div className="flex flex-col justify-between min-h-screen">
+    <div className="flex flex-col justify-between min-h-screen max-w-full">
       <SiteMeta />
 
       <Header />

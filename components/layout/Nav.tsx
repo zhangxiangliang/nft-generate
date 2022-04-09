@@ -1,9 +1,9 @@
 // React
-import { useRouter } from "next/router";
 import { FC } from "react";
+import { useRouter } from "next/router";
 
-// Config
-import { PAGE_GENERATE, PAGE_GITHUB, PAGE_HOME } from "config/page";
+// Utils
+import { PAGE_GENERATE, PAGE_GITHUB, PAGE_HOME } from "utils/page";
 
 // Components
 import AnchorButton from "components/ui/AnchorButton";

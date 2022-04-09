@@ -1,12 +1,16 @@
 // React
 import { FC } from "react";
 
-// Config
-import { PAGE_GITHUB } from "config/page";
+// NPM
+import classNames from "classnames";
+
+// Utils
+import { PAGE_GITHUB } from "utils/page";
+import { borderColor } from "utils/style";
 
 export const Footer: FC = ({}) => {
   return (
-    <footer className="text-center border-t-2 border-black border-opacity-5 p-3">
+    <footer className={classNames(borderColor, "text-center border-t p-3")}>
       <a
         className="text-sm text-black text-opacity-50"
         href={PAGE_GITHUB}
