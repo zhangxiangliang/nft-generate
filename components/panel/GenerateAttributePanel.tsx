@@ -1,5 +1,5 @@
 // React
-import { ChangeEvent, FC, useRef } from "react";
+import { ChangeEvent, FC, useContext, useRef } from "react";
 
 // Icon
 import { UploadIcon } from "@heroicons/react/outline";
@@ -17,10 +17,12 @@ import { borderColor } from "utils/style";
 import Button from "components/ui/Button";
 
 // Provider
+import { GenerateContext } from "provider/GenerateProvider";
 import { GenerateAttribute } from "provider/GenerateProvider";
 import { GenerateAttributeImage } from "provider/GenerateProvider";
 import { initialGenerateAttribute } from "provider/GenerateProvider";
 import CapsuleInput from "components/form/CapsuleInput";
+import { toast } from "react-toastify";
 
 export interface GenerateAttributePanelProps {
   isLast: boolean;
@@ -29,10 +31,6 @@ export interface GenerateAttributePanelProps {
   title?: string;
   className?: string;
   attribute?: GenerateAttribute;
-  onChangeAttribute?: (
-    attribute: GenerateAttribute,
-    changed: Partial<GenerateAttribute>
-  ) => void;
 }
 
 const toBase64 = (file: File): Promise<GenerateAttributeImage> =>
@@ -42,6 +40,7 @@ const toBase64 = (file: File): Promise<GenerateAttributeImage> =>
     reader.onerror = (error) => reject(error);
     reader.onload = () =>
       resolve({
+        id: 0,
         src: reader.result as string,
         number: 0,
         radio: 0,
@@ -54,8 +53,19 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
   isFirst = false,
 
   attribute = { ...initialGenerateAttribute },
-  onChangeAttribute = () => "",
 }) => {
+  const { limit, updateAttribute, deleteAttribute } =
+    useContext(GenerateContext);
+
+  const onChangeAttribute = (
+    attribute: GenerateAttribute,
+    changed: Partial<GenerateAttribute>
+  ) => {
+    Object.keys(changed).length === 0
+      ? deleteAttribute(attribute)
+      : updateAttribute(attribute, changed);
+  };
+
   const uploadRef = useRef<HTMLInputElement>(null);
 
   const onClickUpload = () => uploadRef?.current?.click();
@@ -64,7 +74,37 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
     const files = Array.from(event.target.files || []);
 
     const images: GenerateAttributeImage[] = await Promise.all(
-      files.map(async (file) => toBase64(file))
+      files.map(async (file, index) => ({
+        ...(await toBase64(file)),
+        id: index,
+      }))
+    );
+
+    onChangeAttribute(attribute, { images });
+  };
+
+  const onChangeAttributeImage = async (
+    image: GenerateAttributeImage,
+    changed: Partial<GenerateAttributeImage>
+  ) => {
+    const count = attribute.images
+      .filter((currentImage) => currentImage.id !== image.id)
+      .reduce((acc, image) => acc + image.number, 0);
+
+    if (changed.number && changed.number < 0) {
+      toast.error("图片数量不得小于零");
+      return;
+    }
+
+    if (changed.number && changed.number + count > limit) {
+      toast.error("图片数量总和不得大于组合上限");
+      return;
+    }
+
+    const newImage = { ...image, ...changed };
+
+    const images = attribute.images.map((currentImage) =>
+      currentImage.id !== newImage.id ? currentImage : { ...newImage }
     );
 
     onChangeAttribute(attribute, { images });
@@ -81,7 +121,7 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
         <input
           type="text"
           value={attribute.name}
-          className="focus:outline-none w-1/2 text-sm"
+          className="focus:outline-none w-1/3 text-sm"
           onChange={(event) =>
             onChangeAttribute(attribute, { name: event.target.value })
           }
@@ -134,14 +174,20 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
               type="text"
               value={image.name}
               placeholder="请输入图片名称"
-              onChange={(event) => ""}
+              onChange={(event) =>
+                onChangeAttributeImage(image, { name: event.target.value })
+              }
             />
             <CapsuleInput
               title="数量"
-              type="text"
-              value={0}
+              type="number"
+              value={image.number}
               placeholder="请输入图片数量"
-              onChange={(event) => ""}
+              onChange={(event) => {
+                onChangeAttributeImage(image, {
+                  number: Number(event.target.value) || 0,
+                });
+              }}
             />
           </div>
         ))}

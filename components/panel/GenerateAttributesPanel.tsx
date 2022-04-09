@@ -14,22 +14,12 @@ import GenerateAttributePanel from "components/panel/GenerateAttributePanel";
 import { borderColor } from "utils/style";
 
 // Provider
-import { GenerateAttribute, GenerateContext } from "provider/GenerateProvider";
+import { GenerateContext } from "provider/GenerateProvider";
 
 const GenerateAttributesPanel: NextPage = () => {
-  const { attributes, createAttribute, updateAttribute, deleteAttribute } =
-    useContext(GenerateContext);
+  const { attributes, createAttribute } = useContext(GenerateContext);
 
   const onCreateAttribute = () => createAttribute();
-
-  const onChangeAttribute = (
-    attribute: GenerateAttribute,
-    changed: Partial<GenerateAttribute>
-  ) => {
-    Object.keys(changed).length === 0
-      ? deleteAttribute(attribute)
-      : updateAttribute(attribute, changed);
-  };
 
   return (
     <Panel
@@ -59,8 +49,6 @@ const GenerateAttributesPanel: NextPage = () => {
               // Index
               isFirst={index + 1 === 1}
               isLast={index + 1 === attributes.length}
-              // Event
-              onChangeAttribute={onChangeAttribute}
             />
           </div>
         ))}

@@ -15,7 +15,7 @@ const GenerateMetadataPanel: NextPage = () => {
     useContext(GenerateContext);
 
   return (
-    <Panel title="信息设置" className="grid grid-cols-3 gap-3">
+    <Panel title="信息" className="grid grid-cols-3 gap-3">
       <Input
         title="名称"
         placeholder="请输入 NFT 名称"
