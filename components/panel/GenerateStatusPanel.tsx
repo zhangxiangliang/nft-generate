@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import { GenerateContext } from "provider/GenerateProvider";
 
 const GenerateStatusPanel: NextPage = () => {
-  const { attributes, total, limit, createNfts, name, description } =
+  const { attributes, createNfts, name, description } =
     useContext(GenerateContext);
 
   const onCreate = async () => {
@@ -36,20 +36,6 @@ const GenerateStatusPanel: NextPage = () => {
         placeholder="请输入 NFT 属性数量"
         value={attributes.length}
         disabled
-      />
-      <Input
-        title="组合上限"
-        placeholder="请输入 NFT 组合上限"
-        value={limit}
-        disabled
-        onChange={() => ""}
-      />
-      <Input
-        title="生成数量"
-        placeholder="请输入 NFT 生成数量"
-        value={total}
-        disabled
-        onChange={() => ""}
       />
       <section className="space-x-2">
         <Button onClick={() => onCreate()}>自动生成</Button>

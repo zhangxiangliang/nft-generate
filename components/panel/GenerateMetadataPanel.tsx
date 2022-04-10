@@ -5,7 +5,6 @@ import { useContext } from "react";
 // Components
 import Input from "components/form/Input";
 import Panel from "components/panel/Panel";
-import Select from "components/form/Select";
 
 // Providers
 import { GenerateContext } from "provider/GenerateProvider";
@@ -23,7 +22,7 @@ const GenerateMetadataPanel: NextPage = () => {
   } = useContext(GenerateContext);
 
   return (
-    <Panel title="信息" className="grid grid-cols-4 gap-4">
+    <Panel title="信息">
       <Input
         title="名称"
         placeholder="请输入 NFT 名称"

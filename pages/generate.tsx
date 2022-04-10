@@ -2,12 +2,11 @@
 import { NextPage } from "next";
 
 // Components
-import Panel from "components/panel/Panel";
 import Layout from "components/layout/Layout";
 import GenerateStatusPanel from "components/panel/GenerateStatusPanel";
+import GeneratePreviewPanel from "components/panel/GeneratePreviewPanel";
 import GenerateMetadataPanel from "components/panel/GenerateMetadataPanel";
 import GenerateAttributesPanel from "components/panel/GenerateAttributesPanel";
-import GeneratePreviewPanel from "components/panel/GeneratePreviewPanel";
 
 const Generate: NextPage = () => {
   return (
@@ -16,9 +15,6 @@ const Generate: NextPage = () => {
         {/* Left */}
         <section className="lg:w-3/4 md:w-2/3  w-full">
           <section className="space-y-2">
-            {/* Metadata */}
-            <GenerateMetadataPanel />
-
             {/* Attributes */}
             <GenerateAttributesPanel />
           </section>
@@ -28,7 +24,7 @@ const Generate: NextPage = () => {
         <section className="lg:w-1/4 md:w-1/3 w-full space-y-2">
           <section className="space-y-2 md:sticky md:top-0 relative">
             {/* Preview */}
-            <GeneratePreviewPanel />
+            <GenerateMetadataPanel />
 
             {/* Status */}
             <GenerateStatusPanel />

@@ -3,18 +3,14 @@ import { createContext, FC, useEffect, useState } from "react";
 
 export interface GenerateAttributeImage {
   id: number;
-  name: string;
   src: string;
-  number: number;
-  radio: number;
+  name: string;
 }
 
 export const initialGenerateAttributeImage: GenerateAttributeImage = {
   id: -1,
-  name: "",
   src: "",
-  radio: 0,
-  number: 0,
+  name: "",
 };
 
 export interface GenerateAttribute {
@@ -32,9 +28,6 @@ export const initialGenerateAttribute: GenerateAttribute = {
 };
 
 export interface GenerateState {
-  limit: number;
-  total: number;
-
   width: number;
   setWidth: (width: number) => void;
 
@@ -60,9 +53,6 @@ export interface GenerateState {
 }
 
 export const GenerateContext = createContext<GenerateState>({
-  limit: 0,
-  total: 0,
-
   width: 600,
   setWidth: () => "",
 
@@ -100,7 +90,7 @@ export interface NFT {
   attributes: NFTAttribute[];
 }
 
-let _ranges: Range = {};
+const TOTAL = 10;
 
 export const GenerateProvider: FC = ({ children }) => {
   const [index, setIndex] = useState<number>(0);
@@ -111,11 +101,7 @@ export const GenerateProvider: FC = ({ children }) => {
   const [width, setWidth] = useState<number>(600);
   const [height, setHeight] = useState<number>(600);
 
-  const [limit, setLimit] = useState<number>(0);
-  const [total, setTotal] = useState<number>(0);
-
   const [nfts, setNfts] = useState<NFT[]>([]);
-  const [ranges, setRanges] = useState<Range>({});
   const [attributes, setAttributes] = useState<GenerateAttribute[]>([]);
 
   const createAttribute = async () => {
@@ -176,9 +162,8 @@ export const GenerateProvider: FC = ({ children }) => {
 
   const createNfts = async () => {
     setNfts([]);
-    _ranges = { ...ranges };
     await Promise.all(
-      new Array(total).fill(0).map(async () => {
+      new Array(TOTAL).fill(0).map(async () => {
         const nft = await createNft();
         setNfts((nfts) => [...nfts, nft]);
         return nft;
@@ -211,72 +196,26 @@ export const GenerateProvider: FC = ({ children }) => {
   };
 
   const createNft = async (): Promise<NFT> => {
-    const images: string[] = [];
+    const images: GenerateAttributeImage[] = [];
     const nftAttributes = attributes.map((attribute) => {
-      const items = [..._ranges[attribute.id]];
+      const items = attribute.images;
       const rand = Math.random();
       const index = Math.floor(rand * items.length);
+      const image = items[index];
 
-      const id = items[index];
-
-      items.splice(index, 1);
-      _ranges = { ...ranges, [attribute.id]: items };
-
-      const image = attribute.images.find((image) => image.id == id) || {
-        ...initialGenerateAttributeImage,
-      };
-
-      images.push(image.src);
+      images.push(image);
       return { trait_type: attribute.name, value: image.name };
     });
 
-    const image = await mergeImages(images);
-
     return {
       name,
-      image,
       description,
       attributes: nftAttributes,
+      image: await mergeImages(images.map((i) => i.src)),
     };
   };
 
-  useEffect(() => {
-    const realAttributes = attributes.filter(
-      (attribute) => attribute.images.length !== 0
-    );
-
-    const limit = realAttributes.reduce(
-      (acc, attribute) => acc * attribute.images.length,
-      1
-    );
-
-    const total = attributes
-      .map((attribute) =>
-        attribute.images.reduce((acc, image) => acc + image.number, 0)
-      )
-      .reduce((acc, cur) => (cur < acc ? cur : acc), 10000);
-
-    setTotal(total > 10000 ? 10000 : total);
-    setLimit(realAttributes.length === 0 ? 0 : limit);
-    setRanges(() =>
-      attributes.reduce((acc, attribute) => {
-        const ranges = attribute.images.reduce(
-          (ranges: number[], image: GenerateAttributeImage) => {
-            const newRanges = new Array(image.number).fill(image.id);
-            return [...ranges, ...newRanges];
-          },
-          []
-        );
-
-        return { ...acc, [attribute.id]: ranges };
-      }, {})
-    );
-  }, [attributes]);
-
   const value = {
-    total,
-    limit,
-
     width,
     setWidth,
 

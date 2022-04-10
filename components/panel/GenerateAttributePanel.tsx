@@ -2,8 +2,8 @@
 import { ChangeEvent, FC, useContext, useRef } from "react";
 
 // Icon
-import { UploadIcon } from "@heroicons/react/outline";
 import { TrashIcon } from "@heroicons/react/solid";
+import { UploadIcon } from "@heroicons/react/outline";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 
@@ -15,14 +15,13 @@ import { borderColor } from "utils/style";
 
 // Components
 import Button from "components/ui/Button";
+import CapsuleInput from "components/form/CapsuleInput";
 
 // Provider
 import { GenerateContext } from "provider/GenerateProvider";
 import { GenerateAttribute } from "provider/GenerateProvider";
 import { GenerateAttributeImage } from "provider/GenerateProvider";
 import { initialGenerateAttribute } from "provider/GenerateProvider";
-import CapsuleInput from "components/form/CapsuleInput";
-import { toast } from "react-toastify";
 
 export interface GenerateAttributePanelProps {
   isLast: boolean;
@@ -42,8 +41,6 @@ const toBase64 = (file: File): Promise<GenerateAttributeImage> =>
       resolve({
         id: 0,
         src: reader.result as string,
-        number: 1,
-        radio: 0,
         name: file.name.replace(/\.[^/.]+$/, ""),
       });
   });
@@ -54,8 +51,7 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
 
   attribute = { ...initialGenerateAttribute },
 }) => {
-  const { limit, updateAttribute, deleteAttribute } =
-    useContext(GenerateContext);
+  const { updateAttribute, deleteAttribute } = useContext(GenerateContext);
 
   const onChangeAttribute = (
     attribute: GenerateAttribute,
@@ -89,16 +85,6 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
     image: GenerateAttributeImage,
     changed: Partial<GenerateAttributeImage>
   ) => {
-    if (changed.number && changed.number < 0) {
-      toast.error("图片数量不得小于零");
-      return;
-    }
-
-    if (changed.number && changed.number > limit / attribute.images.length) {
-      toast.error("图片数量总和不得大于组合上限");
-      return;
-    }
-
     const newImage = { ...image, ...changed };
 
     const images = attribute.images.map((currentImage) =>
@@ -175,17 +161,6 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
               onChange={(event) =>
                 onChangeAttributeImage(image, { name: event.target.value })
               }
-            />
-            <CapsuleInput
-              title="数量"
-              type="number"
-              value={image.number}
-              placeholder="请输入图片数量"
-              onChange={(event) => {
-                onChangeAttributeImage(image, {
-                  number: Number(event.target.value) || 0,
-                });
-              }}
             />
           </div>
         ))}

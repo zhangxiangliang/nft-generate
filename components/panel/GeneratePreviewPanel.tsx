@@ -1,14 +1,18 @@
 // React
 import { NextPage } from "next";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
+
+// NPM
+import classNames from "classnames";
 
 // Components
 import Panel from "components/panel/Panel";
 
+// Utils
+import { borderColor } from "utils/style";
+
 // Providers
 import { GenerateContext } from "provider/GenerateProvider";
-import classNames from "classnames";
-import { borderColor } from "utils/style";
 
 const GeneratePreviewPanel: NextPage = () => {
   const { nfts } = useContext(GenerateContext);
