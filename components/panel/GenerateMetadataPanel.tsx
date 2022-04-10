@@ -11,11 +11,21 @@ import Select from "components/form/Select";
 import { GenerateContext } from "provider/GenerateProvider";
 
 const GenerateMetadataPanel: NextPage = () => {
-  const { name, rarity, description, setName, setRarity, setDescription } =
-    useContext(GenerateContext);
+  const {
+    width,
+    height,
+    setWidth,
+    setHeight,
+    name,
+    rarity,
+    description,
+    setName,
+    setRarity,
+    setDescription,
+  } = useContext(GenerateContext);
 
   return (
-    <Panel title="信息" className="grid grid-cols-3 gap-3">
+    <Panel title="信息" className="grid grid-cols-4 gap-4">
       <Input
         title="名称"
         placeholder="请输入 NFT 名称"
@@ -28,14 +38,19 @@ const GenerateMetadataPanel: NextPage = () => {
         value={description}
         onChange={(event) => setDescription(event.target.value)}
       />
-      <Select
-        title="稀有度"
-        value={rarity}
-        onChange={(event) => setRarity(event.target.value as any)}
-        options={[
-          { key: "开启", value: "open" },
-          { key: "关闭", value: "close" },
-        ]}
+      <Input
+        title="宽度"
+        placeholder="请输入 NFT 宽度"
+        type="number"
+        value={width}
+        onChange={(event) => setWidth(Number(event.target.value || 0))}
+      />
+      <Input
+        title="高度"
+        placeholder="请输入 NFT 高度"
+        type="number"
+        value={height}
+        onChange={(event) => setHeight(Number(event.target.value || 0))}
       />
     </Panel>
   );

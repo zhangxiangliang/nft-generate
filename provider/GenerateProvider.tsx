@@ -35,12 +35,19 @@ export interface GenerateState {
   limit: number;
   total: number;
 
-  name: string;
-  rarity: "open" | "close";
-  description: string;
+  width: number;
+  setWidth: (width: number) => void;
 
+  height: number;
+  setHeight: (height: number) => void;
+
+  name: string;
   setName: (name: string) => void;
+
+  rarity: "open" | "close";
   setRarity: (rarity: "open" | "close") => void;
+
+  description: string;
   setDescription: (description: string) => void;
 
   nfts: NFT[];
@@ -59,12 +66,19 @@ export const GenerateContext = createContext<GenerateState>({
   limit: 0,
   total: 0,
 
-  name: "",
-  rarity: "close",
-  description: "",
+  width: 600,
+  setWidth: () => "",
 
+  height: 600,
+  setHeight: () => "",
+
+  name: "",
   setName: () => "",
+
+  rarity: "close",
   setRarity: () => "",
+
+  description: "",
   setDescription: () => "",
 
   nfts: [],
@@ -99,6 +113,9 @@ export const GenerateProvider: FC = ({ children }) => {
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+
+  const [width, setWidth] = useState<number>(600);
+  const [height, setHeight] = useState<number>(600);
 
   const [limit, setLimit] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
@@ -266,6 +283,12 @@ export const GenerateProvider: FC = ({ children }) => {
   const value = {
     total,
     limit,
+
+    width,
+    setWidth,
+
+    height,
+    setHeight,
 
     name,
     setName,
