@@ -42,7 +42,7 @@ const toBase64 = (file: File): Promise<GenerateAttributeImage> =>
       resolve({
         id: 0,
         src: reader.result as string,
-        number: 0,
+        number: 1,
         radio: 0,
         name: file.name.replace(/\.[^/.]+$/, ""),
       });
@@ -80,6 +80,8 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
       }))
     );
 
+    if (images.length === 0) return;
+
     onChangeAttribute(attribute, { images });
   };
 
@@ -87,16 +89,12 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
     image: GenerateAttributeImage,
     changed: Partial<GenerateAttributeImage>
   ) => {
-    const count = attribute.images
-      .filter((currentImage) => currentImage.id !== image.id)
-      .reduce((acc, image) => acc + image.number, 0);
-
     if (changed.number && changed.number < 0) {
       toast.error("图片数量不得小于零");
       return;
     }
 
-    if (changed.number && changed.number + count > limit) {
+    if (changed.number && changed.number > limit / attribute.images.length) {
       toast.error("图片数量总和不得大于组合上限");
       return;
     }
@@ -167,7 +165,7 @@ export const GenerateAttributePanel: FC<GenerateAttributePanelProps> = ({
         )}
 
         {attribute.images.map((image) => (
-          <div key={image.src} className="flex-none select-none w-48 space-y-2">
+          <div key={image.id} className="flex-none select-none w-48 space-y-2">
             <img src={image.src} className="w-48 h-48 m-0 p-0 rounded-md" />
             <CapsuleInput
               title="名称"

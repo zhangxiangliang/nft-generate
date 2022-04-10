@@ -17,7 +17,7 @@ export const Header: FC = ({}) => {
     <header
       className={classNames(
         borderColor,
-        "p-3 flex items-center justify-between border-b"
+        "flex items-center justify-between border-b p-3"
       )}
     >
       <AnchorButton href={PAGE_HOME}>NFT Generate</AnchorButton>

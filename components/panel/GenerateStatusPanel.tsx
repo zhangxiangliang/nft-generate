@@ -7,11 +7,27 @@ import Input from "components/form/Input";
 import Button from "components/ui/Button";
 import Panel from "components/panel/Panel";
 
+/// NPM
+import { toast } from "react-toastify";
+
 // Providers
 import { GenerateContext } from "provider/GenerateProvider";
 
 const GenerateStatusPanel: NextPage = () => {
-  const { attributes, total, limit } = useContext(GenerateContext);
+  const { attributes, total, limit, createNfts, name, description } =
+    useContext(GenerateContext);
+
+  const onCreate = async () => {
+    if (name === "") {
+      toast.error("NFT 名称不能为空");
+      return;
+    }
+    if (description === "") {
+      toast.error("NFT 描述不能为空");
+      return;
+    }
+    createNfts();
+  };
 
   return (
     <Panel title="统计" className="space-y-2">
@@ -26,19 +42,17 @@ const GenerateStatusPanel: NextPage = () => {
         placeholder="请输入 NFT 组合上限"
         value={limit}
         disabled
-        onChange={(event) => ""}
+        onChange={() => ""}
       />
       <Input
         title="生成数量"
         placeholder="请输入 NFT 生成数量"
         value={total}
         disabled
-        onChange={(event) => ""}
+        onChange={() => ""}
       />
       <section className="space-x-2">
-        <Button>随机预览</Button>
-        <Button>自动生成</Button>
-        <Button>手动生成</Button>
+        <Button onClick={() => onCreate()}>自动生成</Button>
       </section>
     </Panel>
   );

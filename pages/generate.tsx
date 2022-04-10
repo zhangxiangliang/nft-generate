@@ -7,6 +7,7 @@ import Layout from "components/layout/Layout";
 import GenerateStatusPanel from "components/panel/GenerateStatusPanel";
 import GenerateMetadataPanel from "components/panel/GenerateMetadataPanel";
 import GenerateAttributesPanel from "components/panel/GenerateAttributesPanel";
+import GeneratePreviewPanel from "components/panel/GeneratePreviewPanel";
 
 const Generate: NextPage = () => {
   return (
@@ -27,12 +28,7 @@ const Generate: NextPage = () => {
         <section className="lg:w-1/4 md:w-1/3 w-full space-y-2">
           <section className="space-y-2 md:sticky md:top-0 relative">
             {/* Preview */}
-            <Panel
-              title="预览"
-              className="bg-black bg-opacity-50 w-full rounded-md pb-full h-0"
-            >
-              <canvas />
-            </Panel>
+            <GeneratePreviewPanel />
 
             {/* Status */}
             <GenerateStatusPanel />
