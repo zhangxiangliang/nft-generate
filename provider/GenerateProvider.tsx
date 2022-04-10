@@ -44,9 +44,6 @@ export interface GenerateState {
   name: string;
   setName: (name: string) => void;
 
-  rarity: "open" | "close";
-  setRarity: (rarity: "open" | "close") => void;
-
   description: string;
   setDescription: (description: string) => void;
 
@@ -74,9 +71,6 @@ export const GenerateContext = createContext<GenerateState>({
 
   name: "",
   setName: () => "",
-
-  rarity: "close",
-  setRarity: () => "",
 
   description: "",
   setDescription: () => "",
@@ -119,7 +113,6 @@ export const GenerateProvider: FC = ({ children }) => {
 
   const [limit, setLimit] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
-  const [rarity, setRarity] = useState<"close" | "open">("close");
 
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [ranges, setRanges] = useState<Range>({});
@@ -292,9 +285,6 @@ export const GenerateProvider: FC = ({ children }) => {
 
     name,
     setName,
-
-    rarity,
-    setRarity,
 
     description,
     setDescription,

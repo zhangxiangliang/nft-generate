@@ -17,10 +17,8 @@ const GenerateMetadataPanel: NextPage = () => {
     setWidth,
     setHeight,
     name,
-    rarity,
     description,
     setName,
-    setRarity,
     setDescription,
   } = useContext(GenerateContext);
 
