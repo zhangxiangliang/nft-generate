@@ -1,6 +1,9 @@
 // React
 import { createContext, FC, useEffect, useState } from "react";
 
+// Provider
+import { NFT } from "provider/NFTProvider";
+
 export interface GenerateAttributeImage {
   id: number;
   src: string;
@@ -28,6 +31,8 @@ export const initialGenerateAttribute: GenerateAttribute = {
 };
 
 export interface GenerateState {
+  max: number;
+
   width: number;
   setWidth: (width: number) => void;
 
@@ -40,8 +45,8 @@ export interface GenerateState {
   description: string;
   setDescription: (description: string) => void;
 
-  nfts: NFT[];
-  createNfts: () => Promise<void>;
+  generateNfts: NFT[];
+  createGenerateNfts: () => Promise<void>;
 
   attributes: GenerateAttribute[];
   createAttribute: () => Promise<void>;
@@ -53,6 +58,8 @@ export interface GenerateState {
 }
 
 export const GenerateContext = createContext<GenerateState>({
+  max: 0,
+
   width: 600,
   setWidth: () => "",
 
@@ -65,30 +72,14 @@ export const GenerateContext = createContext<GenerateState>({
   description: "",
   setDescription: () => "",
 
-  nfts: [],
-  createNfts: async () => {},
+  generateNfts: [],
+  createGenerateNfts: async () => {},
 
   attributes: [],
   createAttribute: async () => {},
   deleteAttribute: async () => {},
   updateAttribute: async () => {},
 });
-
-export interface Range {
-  [key: string]: number[];
-}
-
-export interface NFTAttribute {
-  trait_type: string;
-  value: string;
-}
-
-export interface NFT {
-  name: string;
-  description: string;
-  image: string;
-  attributes: NFTAttribute[];
-}
 
 const TOTAL = 10;
 
@@ -98,10 +89,11 @@ export const GenerateProvider: FC = ({ children }) => {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
+  const [max, setMax] = useState<number>(0);
   const [width, setWidth] = useState<number>(600);
   const [height, setHeight] = useState<number>(600);
 
-  const [nfts, setNfts] = useState<NFT[]>([]);
+  const [generateNfts, setGenerateNfts] = useState<NFT[]>([]);
   const [attributes, setAttributes] = useState<GenerateAttribute[]>([]);
 
   const createAttribute = async () => {
@@ -139,33 +131,31 @@ export const GenerateProvider: FC = ({ children }) => {
             if (changed.sort === currentAttribute.sort) {
               return { ...currentAttribute, sort: attribute.sort as number };
             }
-
             if (attribute.sort === currentAttribute.sort) {
               return { ...currentAttribute, sort: changed.sort as number };
             }
-
             return { ...currentAttribute };
           })
           .sort((before, after) => {
             return before.sort > after.sort ? 1 : -1;
           })
       );
-
-    setAttributes((attributes) =>
-      attributes.map((currentAttribute) =>
-        attribute.sort !== currentAttribute.sort
-          ? currentAttribute
-          : { ...attribute, ...changed }
-      )
-    );
+    changed.sort === undefined &&
+      setAttributes((attributes) =>
+        attributes.map((currentAttribute) =>
+          attribute.sort !== currentAttribute.sort
+            ? currentAttribute
+            : { ...attribute, ...changed }
+        )
+      );
   };
 
-  const createNfts = async () => {
-    setNfts([]);
+  const createGenerateNfts = async () => {
+    setGenerateNfts([]);
     await Promise.all(
       new Array(TOTAL).fill(0).map(async () => {
         const nft = await createNft();
-        setNfts((nfts) => [...nfts, nft]);
+        setGenerateNfts((generateNfts) => [...generateNfts, nft]);
         return nft;
       })
     );
@@ -215,7 +205,22 @@ export const GenerateProvider: FC = ({ children }) => {
     };
   };
 
+  useEffect(() => {
+    const exists = attributes.filter(
+      (attribute) => attribute.images.length !== 0
+    );
+
+    const max =
+      exists.length === 0
+        ? 0
+        : exists.reduce((acc, cur) => acc * cur.images.length, 1);
+
+    setMax(max);
+  }, [attributes]);
+
   const value = {
+    max,
+
     width,
     setWidth,
 
@@ -228,8 +233,8 @@ export const GenerateProvider: FC = ({ children }) => {
     description,
     setDescription,
 
-    nfts,
-    createNfts,
+    generateNfts,
+    createGenerateNfts,
 
     attributes,
     createAttribute,

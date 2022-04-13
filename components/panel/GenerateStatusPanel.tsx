@@ -14,19 +14,16 @@ import { toast } from "react-toastify";
 import { GenerateContext } from "provider/GenerateProvider";
 
 const GenerateStatusPanel: NextPage = () => {
-  const { attributes, createNfts, name, description } =
+  const { max, attributes, createGenerateNfts, name, description } =
     useContext(GenerateContext);
 
   const onCreate = async () => {
-    if (name === "") {
-      toast.error("NFT 名称不能为空");
-      return;
-    }
-    if (description === "") {
-      toast.error("NFT 描述不能为空");
-      return;
-    }
-    createNfts();
+    if (name === "") return toast.error("NFT 名称不能为空");
+    if (description === "") return toast.error("NFT 描述不能为空");
+    if (attributes.length === 0) return toast.error("NFT 属性不能为空");
+    if (max === 0) return toast.error("NFT 属性图片不能为空");
+
+    createGenerateNfts();
   };
 
   return (
